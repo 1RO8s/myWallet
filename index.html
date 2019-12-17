@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" >
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="./src/js/web3.min.js"></script>
+  <script src="./src/js/ethereumjs-tx-1.3.3.min.js"></script>
+  <title>myWallet</title>
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">myWallet</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <!--<li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>-->
+        <li class="nav-item active">
+          <a class="nav-link" href="#view-wallet-info">View wallet info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#create-account">Create account</a>
+        </li>
+        <!--<li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </li>-->
+    </ul>
+  </div>
+</nav>
+</header>
+<div class="container">
+  <section id="importAccount">
+    <div class="card">
+      <div class="card-header bg-secondary text-white">
+        Paste Your Private Key
+      </div>
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">0x</span>
+          </div>
+          <input type="text" class="form-control" placeholder="348ce5..." aria-label="inputKey" aria-descrivedBy="basic-addon1" id="inputKey">
+        </div>
+        <button type="button" name="button" class="btn btn-secondary" id="unlockWithKey">Unlock</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header bg-secondary text-white">
+        Select Yout Wallet File
+      </div>
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputKeystore" aria-describedBy="inputKeystoreAddon01">
+            <label class="custom-file-label" for="inputKeystore">Select Wallet File</label>
+          </div>
+        </div>
+        <form>
+          <div class="form-group">
+            <label for="enterPassword">Enter a password</label>
+            <input type="password" class="form-control" id="enterYourPassword" placeholder="Password">
+          </div>
+          <button type="button" name="button" class="btn btn-secondary" id="unlockWithKeystore">Unlock</button>
+        </form>
+      </div>
+    </div>
+  </section>
+  <section id="viewWalletInfo">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        View Wallet Info
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <tbody>
+            <tr id="yourAddress"><th scope="row">Your Address</th><td></td></tr>
+            <tr id="yourPrivateKey"><th scope="row">Private Key</th><td></td></tr>
+            <tr id="yourBalace"><th scope="row">Account Balance</th><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section id="createAccount">
+    <div class="card" id="crtAccountCard">
+      <div class="card-body">
+        <h2>Create New Account</h2>
+        <form>
+          <div class="form-group">
+            <label for="enterPassword">Enter a password</label>
+            <input type="password" class="form-control" id="enterPassword" placeholder="Password">
+          </div>
+          <button type="button" name="button" class="btn btn-primary" id="createNewAccount">create new account</button>
+        </form>
+        <p>This password encrypts your private key. This does not act as a seed to generate your keys.</p>
+      </div>
+    </div>
+  </section>
+  <section id="saveYourKeystoreFile">
+    <div class="card" id="saveStoreFileCard">
+      <div class="card-body">
+        <h2>Save your Keystore File</h2>
+        <form>
+          <div class="form-group">
+            <a id="download" download="keystore">Download Keystore File</a>
+          </div>
+          <button type="button" name="button" class="btn btn-primary" id="continue" disabled>I understand. Continue.</button>
+        </form>
+        <p>**Do not lose it!** It cannot be recovered if you lose it.</p>
+        <p>**Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.</p>
+        <p>**Make a backup!** Secure it like the millions of dollars it may  one day be worth.</p>
+      </div>
+    </div>
+  </section>
+  <section id="saveYourPrivateKey">
+    <div class="card" id="saveKeyCard">
+      <div class="card-body">
+        <h2>Save Your Private Key</h2>
+        <form>
+          <div class="form-group">
+            <textarea class="form-control" id="yourPrivateKey_textarea" rows="3" readonly></textarea>
+          </div>
+          <button type="button" name="button" class="btn btn-primary"id="saveYourAddress" >Save Your Address</button>
+        </form>
+        <p>**Do not lose it!** It cannot be recovered if you lose it.</p>
+        <p>**Do not share it!** Your funds will be stolen if you use this file on a malicious/phishing site.</p>
+        <p>**Make a backup!** Secure it like the millions of dollars it may  one day be worth.</p>
+      </div>
+    </div>
+  </section>
+  <section id="sendETH">
+    <div class="card">
+      <div class="card-header">
+        Send Ether & Token
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="form-group">
+            <label for="toAddress">To address</label>
+            <input type="text" id="toAddress" class="form-control" placeholder="0x20DeB51D981bBaA97D473EA687d466539C75A7D4"
+            value="0x4695fdF66B7Bc5074bf966D05a7b026076488026">
+          </div>
+          <div class="form-group">
+            <label for="amountToSend">Amount to Send</label>
+            <div class="input-group">
+              <input type="text" id="amountToSend" class="form-control" value="0.1">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rinkeby ETH</button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                  <div role="separator" class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="gasPrice">Gas Price</label>
+            <div class="input-group">
+              <input type="text" id="gasPrice" class="form-control">
+              <div class="input-group-append">
+                <span class="input-group-text">Wei</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="gasLimit">Gas Limit</label>
+            <input type="text" id="gasLimit" class="form-control" value="21000">
+          </div>
+          <button type="button" class="btn btn-secondary btn-lg btn-block" id="generateTransaction">Generate Transaction</button>
+          <div id="groupSend" class="row">
+            <div class="form-group col-sm">
+              <label for="rawTransaction">Raw Transaction</label>
+              <textarea id="rawTransaction" class="form-control" row="3" readonly></textarea>
+            </div>
+            <div class="form-group col-sm">
+              <label for="signedTransaction">Signed Transaction</label>
+              <textarea id="signedTransaction" class="form-control" row="3" readonly></textarea>
+            </div>
+            <button type="button" class="btn btn-secondary btn-lg btn-block" id="sendTransaction" data-target="#sendTxModal" data-toggle="modal">Send Transaction</button>
+            <div class="modal fade" id="sendTxModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Please wait</h5>
+                  </div>
+                  <div class="modal-body">
+                    pedding...
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="./src/js/index.js"></script>
+<link rel="stylesheet" href="./src/css/main.css">
+</body>
+</html>
